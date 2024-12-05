@@ -29,4 +29,4 @@ uvicorn app_password_cracking:app --reload --port 8080
 - **4D** - done
 - **4E** - NOT DONE
 
-**U 4A-4D už jen chybí popisy v protokolu / screenshoty atd. **
+**U 4A-4D už jen chybí popisy v protokolu / screenshoty atd.**
