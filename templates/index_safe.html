@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FastAPI BruteForce Protection</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <script>
+      async function submitPassword() {
+        const password = document.getElementById("password").value;
+        const complexity = document.getElementById("complexity").value;
+
+        const response = await fetch("/check_password", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({
+            password: password,
+            complexity: complexity,
+          }),
+        });
+
+        const result = await response.json();
+        if (result.result === "OK") {
+          alert("Přihlášení úspěšné!");
+        } else if (result.result === "BLOCKED") {
+          alert("Byli jste zablokováni. Zkuste to znovu za 5 minut.");
+        } else {
+          alert(`Nesprávné heslo. Zbývá pokusů: ${result.attempts_left}`);
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Ochrana proti BruteForce útokům</h1>
+    <form onsubmit="event.preventDefault(); submitPassword();">
+      <label for="password">Zadejte heslo:</label>
+      <input type="text" id="password" name="password" required />
+
+      <label for="complexity">Vyberte složitost:</label>
+      <select id="complexity" name="complexity">
+        <option value="0">4 čísla</option>
+        <option value="1">5 čísel</option>
+        <option value="2">4 písmena</option>
+        <option value="3">4 písmena + čísla</option>
+        <option value="4">4 písmena + čísla + speciální znaky</option>
+      </select>
+
+      <button type="submit">Ověřit</button>
+    </form>
+  </body>
+</html>
